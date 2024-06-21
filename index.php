@@ -1,7 +1,15 @@
 <!DOCTYPE html>
-<html lang="en"><title>Effortless Events</title>
+<html lang="en">
 <?php
-   
+    session_start();
+    include('admin/db_connect.php');
+    ob_start();
+        $query = $conn->query("SELECT * FROM system_settings limit 1")->fetch_array();
+         foreach ($query as $key => $value) {
+          if(!is_numeric($key))
+            $_SESSION['system'][$key] = $value;
+        }
+    ob_end_flush();
     include('header.php');
 ?>
 
@@ -59,9 +67,8 @@ footer {
     </div>
     <nav class="navbar navbar-expand-lg navbar-light py-3" id="mainNav">
         <div class="container">
-            <!--<a class="navbar-brand js-scroll-trigger" href="./"> <img
-                    src="assets/img/ee-logo.png"></a>--!>
-              <p><b>Effortless Events</b></p>
+            <a class="navbar-brand js-scroll-trigger" href="./"><img
+                    src=""></a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -82,21 +89,24 @@ footer {
                     <li class="nav-item">
                         <h3><a class="nav-link js-scroll-trigger" href="#">Contact</a></h3>
                     </li>
-                   <div class="float-right">
+                    <?php 
+                      if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+                        echo '<div class="float-right">
                         <div class=" dropdown mr-4" style="left: 2em;">
                             <a href="#" class="text-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                    </a>
+                                aria-expanded="false">'; echo $_SESSION['name'].
+                    '</a>
                     <div class="dropdown-menu" style="left: -1em;">
                         <a class="dropdown-item" href="logout.php"><i class="fa fa-power-off"></i>
                             Logout</a>
                     </div>
             </div>
-        </div>
-        
-       <li class="nav-item"><a class="nav-link js-scroll-trigger" href="login.php">Login</a></li>
-        
-    
+        </div>';
+        }
+        else{
+        echo '<li class="nav-item"><a class="nav-link js-scroll-trigger" href="login.php">Login</a></li>';
+        }
+        ?>
 
                 </ul>
             </div>
@@ -173,23 +183,22 @@ footer {
             <div class="row">
                 <div class="col-md-4 text-center">
                     <div class="mt-5">
-                         <P>Conestoga college</p>
-                        <p>108 University Ave, <br> Waterloo N2J 2W2 <br> Ontario.</p>
+                        <p> 108 University Ave <br> Waterloo N2J 2W2  <br> Ontario.</p>
                     </div>
                 </div>
 
                 <div class="col-md-4 text-center">
                     <div class="mt-5">
                         <p> <a class=""
-                                href="mailto:">gmail</a><br>
-                            Service: </p>
+                                href="mailto:<?php echo $_SESSION['system']['email'] ?>"><?php echo $_SESSION['system']['email'] ?></a><br>
+                            Service: <?php echo $_SESSION['system']['contact'] ?></p>
                     </div>
                 </div>
 
                 <div class="col-md-4 text-center">
                     <div class="mt-5">
-                        <p>Monday - Friday
-                            <br> 6:00 AM - 11:00 PM
+                        <p>Monday - Sunday
+                            <br> 8:00 AM - 6:00 PM
                              
                         </p>
                     </div>
@@ -223,6 +232,6 @@ footer {
     <?php include('footer.php') ?>
 </body>
 
-
+<?php $conn->close() ?>
 
 </html>

@@ -1,4 +1,6 @@
-
+<?php 
+include 'admin/db_connect.php'; 
+?>
 <style>
     #portfolio .img-fluid{
         width: calc(100%);
@@ -57,7 +59,7 @@
 
                         <div class="hbanner-text">
                         <div class="text-center text-light my-5">
-                            <h1 class="cover-title">Welcome to <span class="text-theme">Effortless Events</span></h1>
+                            <h1 class="cover-title">Welcome to <span class="text-theme"><?php echo $_SESSION['system']['name']; ?></span></h1>
                             <br>
                             <p class="cover-text">
                                 Whether you're looking to book a cocktail party, post-work
@@ -81,34 +83,35 @@
                         <a href="#" class="service">
                             <i class="bi bi-journal-bookmark-fill h3"></i>
                             <h5 class="mt-3">Convenient Booking</h5>
-                            <p class="mt-4 mx-2">Attendees can register to events online.
-                                Depending on how the event has been setup this can include pre-booked 
-                                 reservation selections.</p>
+                            <p class="mt-4 mx-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                                Nam tristique urna in leo condimentum, tempor sagittis elit aliquam. Nullam
+                            </p>
                         </a>
                     </div>
                     <div class="col-md-3 text-center py-5 px-2">
                         <a href="#" class="service">
                             <i class="bi bi-phone-vibrate-fill h2"></i>
                             <h5 class="mt-3">Instant Accessing</h5>
-                            <p class="mt-4 mx-2">Planning a business event is a mammoth task.You can find a venue, 
-                                                 create the agenda,sort out seating plans instantly</p>
+                            <p class="mt-4 mx-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                                    Nam tristique urna in leo condimentum, tempor sagittis elit aliquam. Nullam
+                            </p>
                         </a>
                     </div>
                     <div class="col-md-3 text-center py-5 px-2">
                         <a href="#" class="service">
                             <i class="bi bi-search h3"></i>
                             <h5 class="mt-3">Easy Searching</h5>
-                            <p class="mt-4 mx-2">A clear vision, backed by definite plans, gives you a tremendous
-                                                 feeling of confidence and personal power so can be easliy searhed</p>
+                            <p class="mt-4 mx-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                                        Nam tristique urna in leo condimentum, tempor sagittis elit aliquam. Nullam
+                            </p>
                         </a>
                     </div>
                     <div class="col-md-3 text-center py-5 px-2">
                         <a href="#" class="service">
                             <i class="bi bi-diagram-3-fill h2"></i>
                             <h5 class="mt-3">Fast Connecting</h5>
-                            <p class="mt-4 mx-2">Connect With People You Know
-                            it will let you select from dozens or maybe even hundreds
-                             of people you know but haven't yet connected to</p>
+                            <p class="mt-4 mx-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            Nam tristique urna in leo condimentum, tempor sagittis elit aliquam. Nullam</p>
                         </a>
                     </div>
                 </div>
@@ -122,25 +125,42 @@
                
            
                     <div class="row row-cols-1 row-cols-md-3">
-                        
+                        <?php
+                            $event = $conn->query("SELECT e.*,v.venue FROM events e inner join venue v on v.id=e.venue_id where date_format(e.schedule,'%Y-%m%-d') >= '".date('Y-m-d')."' and e.type = 1 order by unix_timestamp(e.schedule) asc");
+
+
+                            while($row = $event->fetch_assoc()):
+
+                                $trans = get_html_translation_table(HTML_ENTITIES,ENT_QUOTES);
+                                unset($trans["\""], $trans["<"], $trans[">"], $trans["<h2"]);
+                                $desc = strtr(html_entity_decode($row['description']),$trans);
+                                $desc=str_replace(array("<li>","</li>"), array("",","), $desc);
+
+                                $venuename = $conn->query("SELECT * FROM venue where id = '".$row['venue_id']."'");
+
+                                $getvenuename = $venuename->fetch_assoc();
+                                 
+
+
+                            ?>
                         <div class="col mb-5">
-                            <div class="card h-100" data-id="">
-                                  
-                                    <img src="admin/assets/uploads/" class="card-img-top" alt="">
-                               
+                            <div class="card h-100" data-id="<?php echo $row['id'] ?>">
+                                  <?php if(!empty($row['banner'])): ?>
+                                    <img src="admin/assets/uploads/<?php echo($row['banner']) ?>" class="card-img-top" alt="">
+                                <?php endif; ?>
                               
                                     <div class="card-body">
-                                        <h4 class="event-title"></h4>
-                                        <p class="event-date"><i class="icons bi bi-calendar2-event-fill text-theme px-2"></i></p>
-                                        <p class="card-tlocation"><i class=" icons bi bi-geo-alt-fill text-theme px-2"></i></p>
-                                        <small class="text-muted event-desc"></small>
+                                        <h4 class="event-title"><?php echo ucwords($row['event']) ?></h4>
+                                        <p class="event-date"><i class="icons bi bi-calendar2-event-fill text-theme px-2"></i><?php echo date("F d, Y h:i A",strtotime($row['schedule'])) ?></p>
+                                        <p class="card-tlocation"><i class=" icons bi bi-geo-alt-fill text-theme px-2"></i><?php echo ucwords($getvenuename['venue']) ?></p>
+                                        <small class="text-muted event-desc"><?php echo strip_tags($desc) ?></small>
                                     </div>
                                         
                                             <a href="#" class="btn btn-themec">Get Tickets</a>
-                                          
+                                        
                             </div>
                         </div>
-                          
+                          <?php endwhile; ?>
                 </div>
             </div>
         </section>
@@ -152,19 +172,49 @@
                 <div class="row-items">
                 <div class="col-lg-12">
                     <div class="row">
-                
+                <?php
+                $rtl ='rtl';
+                $ci= 0;
+                $venue = $conn->query("SELECT * from venue order by rand()");
+                while($row = $venue->fetch_assoc()):
+                   
+                    $ci++;
+                    if($ci < 3){
+                        $rtl = '';
+                    }else{
+                        $rtl = 'rtl';
+                    }
+                    if($ci == 4){
+                        $ci = 0;
+                    }
+                ?>
                 <div class="col-md-6">
-                <div class="card venue-list ">
+                <div class="card venue-list <?php echo $rtl ?>" data-id="<?php echo $row['id'] ?>">
 
-                        <div id="imagesCarousel_ card-img-top " class="carousel slide" data-ride="carousel">
-                            
+                        <div id="imagesCarousel_<?php echo $row['id'] ?> card-img-top " class="carousel slide" data-ride="carousel">
+                            <?php ?>
                               <div class="carousel-inner">
                               
-                                    
-                                         <div class="carousel-item ">
-                                          <img class="d-block w-100" src="" alt="">
+                                    <?php 
+                                        $images = array();
+                                        $fpath = 'admin/assets/uploads/venue_'.$row['id'];
+                                        $images= scandir($fpath);
+                                        $i = 1;
+                                        foreach($images as $k => $v):
+                                            if(!in_array($v,array('.','..'))):
+                                                $active = $i == 1 ? 'active' : '';
+                                            
+                                    ?>
+                                         <div class="carousel-item <?php echo $active ?>">
+                                          <img class="d-block w-100" src="<?php echo $fpath.'/'.$v ?>" alt="">
                                         </div>
-                                    
+                                    <?php
+                                            $i++;
+                                            else:
+                                                unset($images[$v]);
+                                            endif;
+                                        endforeach;
+                                    ?>
           
                                         </div>
                                     </div>
@@ -172,16 +222,16 @@
                         <div class="row align-items-center justify-content-center text-center h-100">
                             <div class="">
                                 <div>
-                                    <h3><b class="filter-txt"></b></h3>
-                                    <small><i></i></small>
+                                    <h3><b class="filter-txt"><?php echo ucwords($row['venue']) ?></b></h3>
+                                    <small><i><?php echo $row['address'] ?></i></small>
                                 </div>
                                 <div>
-                                <span class="truncate" style="font-size: inherit;"><small></small></span>
+                                <span class="truncate" style="font-size: inherit;"><small><?php echo ucwords($row['description']) ?></small></span>
                                     <br>
-                                <span class="badge badge-secondary"><i class="fa fa-tag"></i> Rate Per Hour: 23</span>
+                                <span class="badge badge-secondary"><i class="fa fa-tag"></i> Rate Per Hour: <?php echo number_format($row['rate'],2) ?></span>
                                 <br>
                                 <br>
-                                <button class="btn btn-themec book-venue align-self-end" type="button" data-id=''>Book Now</button>
+                                <button class="btn btn-themec book-venue align-self-end" type="button" data-id='<?php echo $row['id'] ?>'>Book Now</button>
                                 </div>
                             </div>
                         </div>
@@ -191,7 +241,7 @@
                 </div>
                 <br>
                 </div>
-               
+                <?php endwhile; ?>
                 </div>
                 </div>
                 </div>

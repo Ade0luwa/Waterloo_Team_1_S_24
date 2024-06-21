@@ -1,7 +1,58 @@
+<?php
+$showAlert = false;
+$showError = false; 
+$already = false;
+    if($_SERVER['REQUEST_METHOD'] == "POST"){
+        include './admin/db_connect.php';
+        
+        $name = $_POST['name'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $pass = $_POST['password'];
+        $cpass = $_POST['cpassword'];
+
+        $exists = "SELECT * FROM `clients` WHERE username='$username'";
+        $result = mysqli_query($conn , $exists);
+        $numExists = mysqli_num_rows($result);
+        if($numExists > 0){
+            $already = true;
+        }
+        else{
+
+            if($pass == $cpass){
+                $hash = password_hash($pass, PASSWORD_DEFAULT);
+                $query = "INSERT INTO `clients` (`name`, `username`, `email`, `password`) 
+                VALUES ('$name', '$username', '$email', '$hash')";
+                
+                $result = mysqli_query($conn , $query);
+    
+                if($result){
+                    $showAlert = true;
+                    header('location: login.php');
+                }
+            }
+            
+            else{
+                $showError = true;
+            }
+        }
+    }
+?>
 
 <!DOCTYPE html>
 <html lang="en">
-
+<?php 
+session_start();
+include('./admin/db_connect.php');
+ob_start();
+if(!isset($_SESSION['system'])){
+	$system = $conn->query("SELECT * FROM system_settings limit 1")->fetch_array();
+	foreach($system as $k => $v){
+		$_SESSION['system'][$k] = $v;
+	}
+}
+ob_end_flush();
+?>
 
 <head>
     <meta charset="utf-8">
@@ -90,9 +141,9 @@ main#main {
 
     <main id="main" class=" bg-black">
         <div id="login-left">
-            <!--<div class="logo">
-               <img src="assets/img/ee-logo-large.png">
-            </div>--!>
+            <div class="logo">
+                logo here
+            </div>
         </div>
 
         <div id="login-right">
@@ -102,7 +153,26 @@ main#main {
 
                 <div class="card col-md-8 bg-dark">
                     <div class="card-body">
-                       
+                        <?php
+                            if($already){
+                                echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                    <strong> Username Already Exists. </strong> 
+                                </div>';
+                                }
+                                
+                                if($showAlert){
+                                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Your Account is now created and you can login.</strong>
+                                </div> ';
+                                }
+                                
+                                if($showError){
+                                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong> Your Passwords does not match. </strong>
+                                </div>';
+                                } 
+                        ?>
+
                         <form id="login-form" method="post">
                             <div class="form-group">
                                 <label for="name" class="control-label">Name</label>
