@@ -105,6 +105,7 @@ footer {
         }
         else{
         echo '<li class="nav-item"><a class="nav-link js-scroll-trigger" href="login.php">Login</a></li>';
+        echo '<li class="nav-item"><a class="nav-link js-scroll-trigger" href="signup.php">Sign Up</a></li>';
         }
         ?>
 
