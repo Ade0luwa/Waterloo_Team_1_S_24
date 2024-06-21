@@ -1,5 +1,1 @@
-# Set default behavior to automatically normalize line endings.
 * text=auto
-
-# Explicitly declare text files you want to always be normalized and converted.
-*.css text
