@@ -97,9 +97,8 @@ footer {
                                 aria-expanded="false">'; echo $_SESSION['name'].
                     '</a>
                     <div class="dropdown-menu" style="left: -1em;">
-                        <a class="dropdown-item" href="logout.php"><i class="fa fa-power-off"></i>
-                            Logout</a>
-                    </div>
+        <a class="dropdown-item" href="logout.php" id="logout-button"><i class="fa fa-power-off"></i> Logout</a>
+    </div>
             </div>
         </div>';
         }
@@ -220,6 +219,14 @@ footer {
             </div>
         </div>
     </section>
+
+    <script>
+        document.getElementById('logout-button').addEventListener('click', function(event) {
+            if (!confirm('Are you sure you want to log out?')) {
+                event.preventDefault();
+            }
+        });
+    </script>
 
 
 
