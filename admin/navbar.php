@@ -9,7 +9,11 @@
     <div class="sidebar-list">
         <a href="index.php?page=home" class="nav-item nav-home"><span class='icon-field'><i
                     class="fa fa-home"></i></span> Home</a>
-        
+        <a href="index.php?page=booking" class="nav-item nav-booking"><span class='icon-field'><i
+                    class="fa fa-th-list"></i></span> Venue Book List</a>
+     
+        <a href="index.php?page=venue" class="nav-item nav-venue"><span class='icon-field'><i
+                    class="fa fa-map-marked-alt"></i></span> Venues</a>
         <a href="index.php?page=events" class="nav-item nav-events"><span class='icon-field'><i
                     class="fa fa-calendar"></i></span> Events</a>
         

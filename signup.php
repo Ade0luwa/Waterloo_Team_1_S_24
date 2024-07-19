@@ -1,52 +1,55 @@
 <?php
 $showAlert = false;
-$showError = false;
+$showError = false; 
 $already = false;
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    include './admin/db_connect.php';
+    if($_SERVER['REQUEST_METHOD'] == "POST"){
+        include './admin/db_connect.php';
+        
+        $name = $_POST['name'];
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $pass = $_POST['password'];
+        $cpass = $_POST['cpassword'];
 
-    $name = $_POST['name'];
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $pass = $_POST['password'];
-    $cpass = $_POST['cpassword'];
+        $exists = "SELECT * FROM `clients` WHERE username='$username'";
+        $result = mysqli_query($conn , $exists);
+        $numExists = mysqli_num_rows($result);
+        if($numExists > 0){
+            $already = true;
+        }
+        else{
 
-    $exists = "SELECT * FROM `clients` WHERE username='$username'";
-    $result = mysqli_query($conn, $exists);
-    $numExists = mysqli_num_rows($result);
-    if ($numExists > 0) {
-        $already = true;
-    } else {
-
-        if ($pass == $cpass) {
-            $hash = password_hash($pass, PASSWORD_DEFAULT);
-            $query = "INSERT INTO `clients` (`name`, `username`, `email`, `password`) 
+            if($pass == $cpass){
+                $hash = password_hash($pass, PASSWORD_DEFAULT);
+                $query = "INSERT INTO `clients` (`name`, `username`, `email`, `password`) 
                 VALUES ('$name', '$username', '$email', '$hash')";
-
-            $result = mysqli_query($conn, $query);
-
-            if ($result) {
-                $showAlert = true;
-                header('location: login.php');
+                
+                $result = mysqli_query($conn , $query);
+    
+                if($result){
+                    $showAlert = true;
+                    header('location: login.php');
+                }
             }
-        } else {
-            $showError = true;
+            
+            else{
+                $showError = true;
+            }
         }
     }
-}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<?php
+<?php 
 session_start();
-include ('./admin/db_connect.php');
+include('./admin/db_connect.php');
 ob_start();
-if (!isset($_SESSION['system'])) {
-    $system = $conn->query("SELECT * FROM system_settings limit 1")->fetch_array();
-    foreach ($system as $k => $v) {
-        $_SESSION['system'][$k] = $v;
-    }
+if(!isset($_SESSION['system'])){
+	$system = $conn->query("SELECT * FROM system_settings limit 1")->fetch_array();
+	foreach($system as $k => $v){
+		$_SESSION['system'][$k] = $v;
+	}
 }
 ob_end_flush();
 ?>
@@ -58,79 +61,79 @@ ob_end_flush();
     <title>Effortless Events</title>
 
 
-    <?php include ('./header.php'); ?>
+    <?php include('./header.php'); ?>
 
 </head>
 <style>
-    body {
-        width: 100%;
-        height: calc(100%);
-        /*background: #007bff;*/
-    }
+body {
+    width: 100%;
+    height: calc(100%);
+    /*background: #007bff;*/
+}
 
-    main#main {
-        width: 100%;
-        height: calc(100%);
-        background: white;
-    }
+main#main {
+    width: 100%;
+    height: calc(100%);
+    background: white;
+}
 
-    #login-right {
-        border-left: 5px solid purple;
-        position: absolute;
-        right: 0;
-        width: 45%;
-        height: calc(100%);
-        background: rgb(151, 117, 250);
-        background: linear-gradient(180deg, rgba(151, 117, 250, 1) 27%, rgba(255, 216, 168, 1) 100%);
-        color: white;
-        display: flex;
-    }
+#login-right {
+    border-left: 5px solid purple;
+    position: absolute;
+    right: 0;
+    width: 45%;
+    height: calc(100%);
+    background: rgb(151, 117, 250);
+    background: linear-gradient(180deg, rgba(151, 117, 250, 1) 27%, rgba(255, 216, 168, 1) 100%);
+    color: white;
+    display: flex;
+}
 
-    #login-left {
-        position: absolute;
-        left: 0;
-        width: 55%;
-        height: calc(100%);
-        display: flex;
-        align-items: center;
-        /*background: url(assets/uploads/<?php echo $_SESSION['system']['cover_img'] ?>);*/
-        background: url('./admin/assets/img/bgimage.jpg');
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
+#login-left {
+    position: absolute;
+    left: 0;
+    width: 55%;
+    height: calc(100%);
+    display: flex;
+    align-items: center;
+    /*background: url(assets/uploads/<?php echo $_SESSION['system']['cover_img'] ?>);*/
+    background: url('./admin/assets/img/bgimage.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
-    #login-right .card {
-        margin: auto;
-        z-index: 1
-    }
+#login-right .card {
+    margin: auto;
+    z-index: 1
+}
 
-    .logo {
-        margin: auto;
-        font-size: 8rem;
-        padding: 50px;
-        color: #000000b3;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 50px;
-    }
+.logo {
+    margin: auto;
+    font-size: 8rem;
+    padding: 50px;
+    color: #000000b3;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50px;
+}
 
-    .text-theme {
-        border-bottom: 2px solid purple;
-        padding: 12px;
-        margin: 10px;
-        color: purple;
-    }
+.text-theme {
+    border-bottom: 2px solid purple;
+    padding: 12px;
+    margin: 10px;
+    color: purple;
+}
 
-    .btn-theme {
-        display: inline-block;
-        margin: 10px 0px;
-        padding: 8px 24px;
-        background-color: #d0bfff;
-    }
+.btn-theme {
+    display: inline-block;
+    margin: 10px 0px;
+    padding: 8px 24px;
+    background-color: #d0bfff;
+}
 
-    .btn-theme:hover {
-        background-color: #845ef7;
-        transition: 0.4s ease all;
-    }
+.btn-theme:hover {
+    background-color: #845ef7;
+    transition: 0.4s ease all;
+}
 </style>
 
 <body>
@@ -139,7 +142,7 @@ ob_end_flush();
     <main id="main" class=" bg-black">
         <div id="login-left">
             <div class="logo">
-                logo here
+                <img src="assets/img/ee-logo-large.png">
             </div>
         </div>
 
@@ -151,23 +154,23 @@ ob_end_flush();
                 <div class="card col-md-8 bg-dark">
                     <div class="card-body">
                         <?php
-                        if ($already) {
-                            echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            if($already){
+                                echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
                                     <strong> Username Already Exists. </strong> 
                                 </div>';
-                        }
-
-                        if ($showAlert) {
-                            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                                }
+                                
+                                if($showAlert){
+                                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                                     <strong>Your Account is now created and you can login.</strong>
                                 </div> ';
-                        }
-
-                        if ($showError) {
-                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                }
+                                
+                                if($showError){
+                                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong> Your Passwords does not match. </strong>
                                 </div>';
-                        }
+                                } 
                         ?>
 
                         <form id="login-form" method="post">
@@ -185,13 +188,13 @@ ob_end_flush();
                             </div>
                             <div class="form-group">
                                 <label for="password" class="control-label">Password</label>
-                                <input type="password" id="password" name="password" class="form-control" required>
+                                <input type="password" id="password" name="password" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="cpassword" class="control-label">Confirm Password</label>
-                                <input type="password" id="cpassword" name="cpassword" class="form-control" required>
+                                <input type="password" id="cpassword" name="cpassword" class="form-control">
                             </div>
-                            <center><button class="btn-lg btn-wave btn-theme">Sign Up</button></center>
+                            <center><button class="btn-lg btn-wave btn-theme">Login</button></center>
                         </form>
                         <p> Have an Account? <a href="login.php">Login</a></p>
                     </div>

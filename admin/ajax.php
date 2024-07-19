@@ -44,10 +44,32 @@ if($action == "save_settings"){
 	if($save)
 		echo $save;
 }
+if($action == "save_venue"){
+	$save = $crud->save_venue();
+	if($save)
+		echo $save;
+}
+if($action == "save_book"){
+	$save = $crud->save_book();
+	if($save)
+		echo $save;
+}
+if($action == "save_book_admin"){
+	$save = $crud->save_book_admin();
+	if($save)
+		echo $save;
+}
+if($action == "delete_book"){
+	$save = $crud->delete_book();
+	if($save)
+		echo $save;
+}
 
-
-
-
+if($action == "delete_venue"){
+	$save = $crud->delete_venue();
+	if($save)
+		echo $save;
+}
 
 if($action == "save_event"){
 	$save = $crud->save_event();

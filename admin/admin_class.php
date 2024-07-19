@@ -121,6 +121,122 @@ Class Action {
 			return 1;
 				}
 	}
+
+	
+	function save_venue(){
+		extract($_POST);
+		$data = " venue = '$venue' ";
+		$data .= ", address = '$address' ";
+		$data .= ", description = '$description' ";
+		$data .= ", rate = '$rate' ";
+		if(empty($id)){
+			//echo "INSERT INTO arts set ".$data;
+			$save = $this->db->query("INSERT INTO venue set ".$data);
+			if($save){
+				$id = $this->db->insert_id;
+				$folder = "assets/uploads/venue_".$id;
+				if(is_dir($folder)){
+					$files = scandir($folder);
+					foreach($files as $k =>$v){
+						if(!in_array($v, array('.','..'))){
+							unlink($folder."/".$v);
+						}
+					}
+				}else{
+					mkdir($folder);
+				}
+				if(isset($img)){
+				for($i = 0 ; $i< count($img);$i++){
+						$img[$i]= str_replace('data:image/jpeg;base64,', '', $img[$i] );
+						$img[$i] = base64_decode($img[$i]);
+						$fname = $id."_".strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
+						$upload = file_put_contents($folder."/".$fname,$img[$i]);
+					}
+				}
+			}
+		}else{
+			$save = $this->db->query("UPDATE venue set ".$data." where id=".$id);
+			if($save){
+				$folder = "assets/uploads/venue_".$id;
+				if(is_dir($folder)){
+					$files = scandir($folder);
+					foreach($files as $k =>$v){
+						if(!in_array($v, array('.','..'))){
+							unlink($folder."/".$v);
+						}
+					}
+				}else{
+					mkdir($folder);
+				}
+
+				if(isset($img)){
+				for($i = 0 ; $i< count($img);$i++){
+						$img[$i]= str_replace('data:image/jpeg;base64,', '', $img[$i] );
+						$img[$i] = base64_decode($img[$i]);
+						$fname = $id."_".strtotime(date('Y-m-d H:i'))."_".$imgName[$i];
+						$upload = file_put_contents($folder."/".$fname,$img[$i]);
+					}
+				}
+			}
+		}
+		if($save)
+			return 1;
+	}
+	function delete_venue(){
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM venue where id = ".$id);
+		if($delete){
+			return 1;
+		}
+	}
+	function save_book_admin(){
+		extract($_POST);
+		$data = " venue_id = '$venue_id' ";
+		$data .= ", name = '$name' ";
+		$data .= ", address = '$address' ";
+		$data .= ", email = '$email' ";
+		$data .= ", contact = '$contact' ";
+		$data .= ", datetime = '$schedule' ";
+		$data .= ", duration = '$duration' ";
+		if(isset($status))
+		$data .= ", status = '$status' ";
+		if(empty($id)){
+			$save = $this->db->query("INSERT INTO venue_booking set ".$data);
+		}else{
+			$save = $this->db->query("UPDATE venue_booking set ".$data." where id=".$id);
+		}
+		if($save)
+			return 1;
+	}
+	function save_book(){
+		extract($_POST);
+		$data = " venue_id = '$venue_id' ";
+		$data .= ", name = '$name' ";
+		$data .= ", address = '$address' ";
+		$data .= ", email = '$email' ";
+		$data .= ", contact = '$contact' ";
+		$data .= ", datetime = '$schedule' ";
+		$data .= ", duration = '$duration' ";
+		if(isset($status))
+		$data .= ", status = '$status' ";
+		if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+			if(empty($id)){
+				$save = $this->db->query("INSERT INTO venue_booking set ".$data);
+			}else{
+				$save = $this->db->query("UPDATE venue_booking set ".$data." where id=".$id);
+			}
+			if($save)
+				return 1;
+		}
+	}
+	function delete_book(){
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM venue_booking where id = ".$id);
+		if($delete){
+			return 1;
+		}
+	}
+
 	function save_event(){
 		extract($_POST);
 		$data = " event = '$event' ";

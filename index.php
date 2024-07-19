@@ -67,8 +67,8 @@ footer {
     </div>
     <nav class="navbar navbar-expand-lg navbar-light py-3" id="mainNav">
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="./"><img
-                    src=""></a>
+            <a class="navbar-brand js-scroll-trigger" href="./"><?php //echo $_SESSION['system']['name'] ?> <img
+                    src="assets/img/ee-logo.png"></a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -78,16 +78,16 @@ footer {
                         <h3><a class="nav-link js-scroll-trigger" href="index.php?page=home">Home</a></h3>
                     </li>
                     <li class="nav-item">
-                        <h3><a class="nav-link js-scroll-trigger" href="#">Venues</a></h3>
+                        <h3><a class="nav-link js-scroll-trigger" href="index.php?page=venue">Venues</a></h3>
                     </li>
                     <li class="nav-item">
                         <h3><a class="nav-link js-scroll-trigger" href="index.php?page=events">Events</a></h3>
                     </li>
                     <li class="nav-item">
-                        <h3><a class="nav-link js-scroll-trigger" href="#">About</a></h3>
+                        <h3><a class="nav-link js-scroll-trigger" href="index.php?page=about">About</a></h3>
                     </li>
                     <li class="nav-item">
-                        <h3><a class="nav-link js-scroll-trigger" href="#">Contact</a></h3>
+                        <h3><a class="nav-link js-scroll-trigger" href="index.php?page=contact">Contact</a></h3>
                     </li>
                     <?php 
                       if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
@@ -97,14 +97,14 @@ footer {
                                 aria-expanded="false">'; echo $_SESSION['name'].
                     '</a>
                     <div class="dropdown-menu" style="left: -1em;">
-        <a class="dropdown-item" href="logout.php" id="logout-button"><i class="fa fa-power-off"></i> Logout</a>
-    </div>
+                        <a class="dropdown-item" href="logout.php"><i class="fa fa-power-off"></i>
+                            Logout</a>
+                    </div>
             </div>
         </div>';
         }
         else{
         echo '<li class="nav-item"><a class="nav-link js-scroll-trigger" href="login.php">Login</a></li>';
-        echo '<li class="nav-item"><a class="nav-link js-scroll-trigger" href="signup.php">Sign Up</a></li>';
         }
         ?>
 
@@ -183,7 +183,8 @@ footer {
             <div class="row">
                 <div class="col-md-4 text-center">
                     <div class="mt-5">
-                        <p> 108 University Ave <br> Waterloo N2J 2W2  <br> Ontario.</p>
+                    <P>Conestoga college</p>
+                        <p>108 University Ave, <br> Waterloo N2J 2W2 <br> Ontario.</p>
                     </div>
                 </div>
 
@@ -197,9 +198,8 @@ footer {
 
                 <div class="col-md-4 text-center">
                     <div class="mt-5">
-                        <p>Monday - Sunday
+                        <p>Monday - Friday
                             <br> 8:00 AM - 6:00 PM
-                             
                         </p>
                     </div>
                 </div>
@@ -219,14 +219,6 @@ footer {
             </div>
         </div>
     </section>
-
-    <script>
-        document.getElementById('logout-button').addEventListener('click', function(event) {
-            if (!confirm('Are you sure you want to log out?')) {
-                event.preventDefault();
-            }
-        });
-    </script>
 
 
 
