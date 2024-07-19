@@ -1,43 +1,52 @@
 <?php
 $login = false;
-$showError = false; 
-    if($_SERVER['REQUEST_METHOD'] == "POST"){
-        include './admin/db_connect.php';
-        
-        $username = $_POST['username'];
-        $pass = $_POST['password'];
-             
-        $query="SELECT * from `clients` where username = '$username'";
-        $result = mysqli_query($conn , $query);
+$showError = false;
+$logoutSuccess = false;
 
-        $numRows = mysqli_num_rows($result);
+session_start();
+if (isset($_SESSION['logout_success'])) {
+    $logoutSuccess = true;
+    unset($_SESSION['logout_success']);
+}
 
-        if($numRows == 1){
-            $row = mysqli_fetch_assoc($result);
-            if(password_verify($pass , $row['password'])){
-                session_start();
-                $_SESSION['loggedin'] = true;
-                $_SESSION['name'] = $row['name'];
-                $login = true;
-                header('Location: index.php');
-            }
-        }
-        else{
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    include './admin/db_connect.php';
+
+    $username = $_POST['username'];
+    $pass = $_POST['password'];
+
+    $query = "SELECT * from `clients` where username = '$username'";
+    $result = mysqli_query($conn, $query);
+
+    $numRows = mysqli_num_rows($result);
+
+    if ($numRows == 1) {
+        $row = mysqli_fetch_assoc($result);
+        if (password_verify($pass, $row['password'])) {
+            $_SESSION['loggedin'] = true;
+            $_SESSION['name'] = $row['name'];
+            $login = true;
+            header('Location: index.php');
+            exit();
+        } else {
             $showError = true;
         }
+    } else {
+        $showError = true;
     }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<?php 
+<?php
 include('./admin/db_connect.php');
 ob_start();
-if(!isset($_SESSION['system'])){
-	$system = $conn->query("SELECT * FROM system_settings limit 1")->fetch_array();
-	foreach($system as $k => $v){
-		$_SESSION['system'][$k] = $v;
-	}
+if (!isset($_SESSION['system'])) {
+    $system = $conn->query("SELECT * FROM system_settings limit 1")->fetch_array();
+    foreach ($system as $k => $v) {
+        $_SESSION['system'][$k] = $v;
+    }
 }
 ob_end_flush();
 ?>
@@ -47,7 +56,6 @@ ob_end_flush();
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>Effortless Events</title>
-
 
     <?php include('./header.php'); ?>
 
@@ -127,16 +135,6 @@ main#main {
 </style>
 
 <body>
-    <?php
-        
-        if($login){
-           echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>SUCCESS!</strong> You\'re logged in.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-        }
-    ?>
-
     <main id="main" class=" bg-black">
         <div id="login-left">
             <div class="logo">
@@ -151,11 +149,17 @@ main#main {
 
                 <div class="card col-md-8 bg-dark">
                     <div class="card-body">
-                        <?php if($showError){
-            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                     <strong>Wrong Email or Password.</strong>
-                 </div>';
-        }?>
+                        <?php 
+                        if ($showError) {
+                            echo '<div id="error-message" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Wrong Email or Password.</strong>
+                                  </div>';
+                        } elseif ($logoutSuccess) {
+                            echo '<div id="logout-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>SUCCESS!</strong> You\'ve been logged out.
+                                  </div>';
+                        }
+                        ?>
                         <form id="login-form" method="post">
                             <div class="form-group">
                                 <label for="username" class="control-label">Username</label>
@@ -163,8 +167,7 @@ main#main {
                             </div>
                             <div class="form-group">
                                 <label for="password" class="control-label">Password</label>
-                                <input type="password" id="password" name="password" class="form-control"
-                                    autocomplete="off">
+                                <input type="password" id="password" name="password" class="form-control" autocomplete="off">
                             </div>
                             <center><button class="btn-lg btn-wave btn-theme">Login</button></center>
                         </form><br>
@@ -173,12 +176,28 @@ main#main {
                 </div>
             </div>
         </div>
-
-
     </main>
 
+    <!-- JavaScript to hide the messages after 2 seconds -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var errorMessage = document.getElementById('error-message');
+            var successMessage = document.getElementById('success-message');
+            var logoutSuccess = document.getElementById('logout-success');
 
-
+            setTimeout(function() {
+                if (errorMessage) {
+                    errorMessage.style.display = 'none';
+                }
+                if (successMessage) {
+                    successMessage.style.display = 'none';
+                }
+                if (logoutSuccess) {
+                    logoutSuccess.style.display = 'none';
+                }
+            }, 2000);
+        });
+    </script>
 </body>
 
 </html>
