@@ -83,35 +83,34 @@ include 'admin/db_connect.php';
                         <a href="#" class="service">
                             <i class="bi bi-journal-bookmark-fill h3"></i>
                             <h5 class="mt-3">Convenient Booking</h5>
-                            <p class="mt-4 mx-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                                Nam tristique urna in leo condimentum, tempor sagittis elit aliquam. Nullam
-                            </p>
+                            <p class="mt-4 mx-2">Attendees can register to events online.
+                                Depending on how the event has been setup this can include pre-booked 
+                                 reservation selections.</p>
                         </a>
                     </div>
                     <div class="col-md-3 text-center py-5 px-2">
                         <a href="#" class="service">
                             <i class="bi bi-phone-vibrate-fill h2"></i>
                             <h5 class="mt-3">Instant Accessing</h5>
-                            <p class="mt-4 mx-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                                    Nam tristique urna in leo condimentum, tempor sagittis elit aliquam. Nullam
-                            </p>
+                            <p class="mt-4 mx-2">Planning a business event is a mammoth task.You can find a venue, 
+                                                 create the agenda,sort out seating plans instantly</p>
                         </a>
                     </div>
                     <div class="col-md-3 text-center py-5 px-2">
                         <a href="#" class="service">
                             <i class="bi bi-search h3"></i>
                             <h5 class="mt-3">Easy Searching</h5>
-                            <p class="mt-4 mx-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                                        Nam tristique urna in leo condimentum, tempor sagittis elit aliquam. Nullam
-                            </p>
+                            <p class="mt-4 mx-2">A clear vision, backed by definite plans, gives you a tremendous
+                                                 feeling of confidence and personal power so can be easliy searhed</p>
                         </a>
                     </div>
                     <div class="col-md-3 text-center py-5 px-2">
                         <a href="#" class="service">
                             <i class="bi bi-diagram-3-fill h2"></i>
                             <h5 class="mt-3">Fast Connecting</h5>
-                            <p class="mt-4 mx-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                            Nam tristique urna in leo condimentum, tempor sagittis elit aliquam. Nullam</p>
+                            <p class="mt-4 mx-2">Connect With People You Know
+                            it will let you select from dozens or maybe even hundreds
+                             of people you know but haven't yet connected to</p>
                         </a>
                     </div>
                 </div>
@@ -157,6 +156,7 @@ include 'admin/db_connect.php';
                                     </div>
                                         
                                             <a href="#" class="btn btn-themec">Get Tickets</a>
+                                            
                                         
                             </div>
                         </div>
@@ -281,8 +281,8 @@ include 'admin/db_connect.php';
             </div>
         </section>
 
-         
-       
+         <!-- our team section -->
+        
 
 
 <script>

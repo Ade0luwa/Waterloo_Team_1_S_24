@@ -78,8 +78,8 @@ border-radius: 50px;
 
   <main id="main" class=" bg-black">
   		<div id="login-left">
-  			<div class="logo"><h3>LOGO HERE</h3>
-  				<img src="">
+  			<div class="logo">
+  				<img src="assets/img/ee-logo-large.png">
   			</div>
   		</div>
 
