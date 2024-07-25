@@ -2,37 +2,71 @@
 $showAlert = false;
 $showError = false;
 $already = false;
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     include './admin/db_connect.php';
 
-    $name = $_POST['name'];
-    $username = $_POST['username'];
-    $email = $_POST['email'];
+    $name = trim($_POST['name']);
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
     $pass = $_POST['password'];
     $cpass = $_POST['cpassword'];
 
-    $exists = "SELECT * FROM `clients` WHERE username='$username'";
-    $result = mysqli_query($conn, $exists);
-    $numExists = mysqli_num_rows($result);
-    if ($numExists > 0) {
+    if (usernameExists($conn, $username)) {
         $already = true;
     } else {
-
-        if ($pass == $cpass) {
-            $hash = password_hash($pass, PASSWORD_DEFAULT);
-            $query = "INSERT INTO `clients` (`name`, `username`, `email`, `password`) 
-                VALUES ('$name', '$username', '$email', '$hash')";
-
-            $result = mysqli_query($conn, $query);
-
-            if ($result) {
-                $showAlert = true;
-                header('location: login.php');
-            }
-        } else {
-            $showError = true;
-        }
+        $showError = !handleSignup($conn, $name, $username, $email, $pass, $cpass);
+        $showAlert = !$showError;
     }
+}
+
+function usernameExists($conn, $username) {
+    $existsStmt = $conn->prepare("SELECT * FROM `clients` WHERE username=?");
+    $existsStmt->bind_param("s", $username);
+    $existsStmt->execute();
+    $result = $existsStmt->get_result();
+    return $result->num_rows > 0;
+}
+
+function validateInput($name, $username, $email, $pass, $cpass) {
+    if (empty($name) || empty($username) || empty($email) || empty($pass) || empty($cpass)) {
+        return false;
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+
+    if ($pass !== $cpass) {
+        return false;
+    }
+
+    return true;
+}
+
+function hashPassword($password) {
+    return password_hash($password, PASSWORD_DEFAULT);
+}
+
+function insertUser($conn, $name, $username, $email, $hash) {
+    $queryStmt = $conn->prepare("INSERT INTO `clients` (`name`, `username`, `email`, `password`) VALUES (?, ?, ?, ?)");
+    $queryStmt->bind_param("ssss", $name, $username, $email, $hash);
+    return $queryStmt->execute();
+}
+
+function handleSignup($conn, $name, $username, $email, $pass, $cpass) {
+    if (!validateInput($name, $username, $email, $pass, $cpass)) {
+        return false;
+    }
+
+    $hash = hashPassword($pass);
+
+    if (insertUser($conn, $name, $username, $email, $hash)) {
+        header('Location: login.php');
+        exit();
+    }
+
+    return false;
 }
 ?>
 
@@ -43,10 +77,10 @@ session_start();
 include('./admin/db_connect.php');
 ob_start();
 if(!isset($_SESSION['system'])){
-	$system = $conn->query("SELECT * FROM system_settings limit 1")->fetch_array();
-	foreach($system as $k => $v){
-		$_SESSION['system'][$k] = $v;
-	}
+    $system = $conn->query("SELECT * FROM system_settings limit 1")->fetch_array();
+    foreach($system as $k => $v){
+        $_SESSION['system'][$k] = $v;
+    }
 }
 ob_end_flush();
 ?>
