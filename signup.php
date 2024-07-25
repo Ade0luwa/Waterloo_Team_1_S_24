@@ -67,8 +67,9 @@ function handleSignup($conn, $name, $username, $email, $password, $cpassword)
 }
 
 $showAlert = false;
-$showError = false; 
+$showError = false;
 $already = false;
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         include './admin/db_connect.php';
@@ -78,31 +79,37 @@ $already = false;
         $email = $_POST['email'];
         $pass = $_POST['password'];
         $cpass = $_POST['cpassword'];
+=======
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    include './admin/db_connect.php';
+>>>>>>> 2b8c92e9d2cd7c5e8e178b8ca5bcde885ac0c468
 
-        $exists = "SELECT * FROM `clients` WHERE username='$username'";
-        $result = mysqli_query($conn , $exists);
-        $numExists = mysqli_num_rows($result);
-        if($numExists > 0){
-            $already = true;
-        }
-        else{
+    $name = $_POST['name'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $pass = $_POST['password'];
+    $cpass = $_POST['cpassword'];
 
-            if($pass == $cpass){
-                $hash = password_hash($pass, PASSWORD_DEFAULT);
-                $query = "INSERT INTO `clients` (`name`, `username`, `email`, `password`) 
+    $exists = "SELECT * FROM `clients` WHERE username='$username'";
+    $result = mysqli_query($conn, $exists);
+    $numExists = mysqli_num_rows($result);
+    if ($numExists > 0) {
+        $already = true;
+    } else {
+
+        if ($pass == $cpass) {
+            $hash = password_hash($pass, PASSWORD_DEFAULT);
+            $query = "INSERT INTO `clients` (`name`, `username`, `email`, `password`) 
                 VALUES ('$name', '$username', '$email', '$hash')";
-                
-                $result = mysqli_query($conn , $query);
-    
-                if($result){
-                    $showAlert = true;
-                    header('location: login.php');
-                }
+
+            $result = mysqli_query($conn, $query);
+
+            if ($result) {
+                $showAlert = true;
+                header('location: login.php');
             }
-            
-            else{
-                $showError = true;
-            }
+        } else {
+            $showError = true;
         }
 =======
 
@@ -121,6 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $showError = !validateInput($name, $username, $email, $pass, $cpass);
 >>>>>>> Stashed changes
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -221,23 +229,23 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <div class="card col-md-8 bg-dark">
                     <div class="card-body">
                         <?php
-                            if($already){
-                                echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        if ($already) {
+                            echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">
                                     <strong> Username Already Exists. </strong> 
                                 </div>';
-                                }
-                                
-                                if($showAlert){
-                                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                        }
+
+                        if ($showAlert) {
+                            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
                                     <strong>Your Account is now created and you can login.</strong>
                                 </div> ';
-                                }
-                                
-                                if($showError){
-                                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        }
+
+                        if ($showError) {
+                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong> Your Passwords does not match. </strong>
                                 </div>';
-                                } 
+                        }
                         ?>
 
                         <form id="login-form" method="post">
@@ -255,13 +263,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                             </div>
                             <div class="form-group">
                                 <label for="password" class="control-label">Password</label>
-                                <input type="password" id="password" name="password" class="form-control">
+                                <input type="password" id="password" name="password" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="cpassword" class="control-label">Confirm Password</label>
-                                <input type="password" id="cpassword" name="cpassword" class="form-control">
+                                <input type="password" id="cpassword" name="cpassword" class="form-control" required>
                             </div>
-                            <center><button class="btn-lg btn-wave btn-theme">Login</button></center>
+                            <center><button class="btn-lg btn-wave btn-theme">Sign Up</button></center>
                         </form>
                         <p> Have an Account? <a href="login.php">Login</a></p>
                     </div>
