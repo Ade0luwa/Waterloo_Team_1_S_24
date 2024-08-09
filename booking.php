@@ -59,7 +59,7 @@ $('#manage-book').submit(function(e) {
         type: 'POST',
         success: function(resp) {
             if (resp == 1) {
-                alert_toast("Book Request Sent.", 'success')
+                alert_toast("Booking Request Sent.", 'success')
                 end_load()
                 uni_modal("", "book_msg.php")
 
