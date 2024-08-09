@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2024 at 04:14 AM
+-- Generation Time: Aug 09, 2024 at 09:58 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -81,11 +81,14 @@ INSERT INTO `clients` (`id`, `name`, `username`, `email`, `password`) VALUES
 (5, 'Vansh Palkhiwala', 'Vansh123', 'vpalkhiwala1360@conestogac.on.ca', '$2y$10$TkGpJdhdyeuXL9gyj.pba.kA2c4AnTdtlYViT4BMbIHegYTTj9hAC'),
 (6, 'Edikan Ekanem', 'didi', 'eekanem5146@conestogac.on.ca', '$2y$10$glxR9HbFnh3u4ZJ5O1kIAuqnNEPfKRFe47fa1rUXogN1pnkAYKZrG'),
 (7, 'Adeoluwatomiwa Adegbesan', 'adeolu', 'aadegbesan5771@conestogac.on.ca', '$2y$10$AG/YnYrxQBTZEXzoXrCUXu.IUIAYqgY4F/1HkXLR6LdQlLEZPvNcy'),
-(8, 'Test Boss', 'Test Boss', 'testboss@gmail.com', '$2y$10$Yfszs5Eil17yu/zu1ktpkun2anAP3aX4sPRHV4/XMnuiBSgS.akKe'),
-(9, '', '', '', '$2y$10$JJ3lSaMrrmH1p64f7HidVu8IdvRDUhioKLIrBVCm3QIb9me5nR27W'),
 (10, 'DidiGirl', 'EdiEkanem', 'didi@gmail.com', '$2y$10$QZjBIHn0aN7NhsWuIK/3zud4sqzLYm3YnYTeHkrRepMTVobdU6MZe'),
 (11, 'Bankole', 'Banky', 'banks@gmaail.com', '$2y$10$O.KQ/T2Mx1ip9xcEc4ssGO1Q3SM.I9eisDl5Wd.pKLIFuLLKLkHuS'),
-(12, 'zaid', 'zaid', 'zaidzaid@gmail.com', '$2y$10$E7satCN2QbKHz2VWAdMqpONmmlPOx3o2A1uafwngXWiL3ounbo9vq');
+(12, 'zaid', 'zaid', 'zaidzaid@gmail.com', '$2y$10$E7satCN2QbKHz2VWAdMqpONmmlPOx3o2A1uafwngXWiL3ounbo9vq'),
+(14, 'Adeoluwatomiwa', 'Gbesh', 'gbesh@gmail.com', '$2y$10$XzEGOWepJw2gNUT7UUFKXuW1UKVYUAejNfpXaP72ilCVRocnQ3kJS'),
+(15, 'Bamidele', 'Bam Bam', 'bams@gmail.com', '9c27c5c68b4581b2845f6395b21a0a1f'),
+(16, 'Harsh Patel', 'Harsh', 'harsh@gmail.com', '15cc6504275eee2cb139a19334897f77'),
+(18, 'Tobiloba', 'Tobi', 'tobi@gmail.com', '$2y$10$QwkmrDTEfpWKXfsbvBIomeQPdJHrk1Po9hmBCP8fmR/ARPIiVSITG'),
+(19, 'Motunrayo', 'MoMo', 'mo@gmail.com', '$2y$10$zmxhwA2rbNI9EAz3m/oL.Owmh5g1JHdCgHKLwKs8ABuNwOpCktKR2');
 
 -- --------------------------------------------------------
 
@@ -217,7 +220,6 @@ INSERT INTO `venue_booking` (`id`, `name`, `address`, `email`, `contact`, `venue
 (18, 'Adeoluwatomiwa Daniel Adegbesan', 'conestoga', 'adegbesanadeoluwatomiwa@gmail.com', '3334445567', 2, '3', '2024-07-31 19:00:00', 0, '2024-07-26 19:00:00'),
 (19, 'ade', 'conestoga', 'ade@gmiail.com', '2223334455', 4, '2', '2024-07-30 20:00:00', 1, '2024-07-30 20:00:00');
 
-
 --
 -- Indexes for dumped tables
 --
@@ -278,7 +280,7 @@ ALTER TABLE `audience`
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `events`
@@ -308,7 +310,7 @@ ALTER TABLE `venue`
 -- AUTO_INCREMENT for table `venue_booking`
 --
 ALTER TABLE `venue_booking`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
