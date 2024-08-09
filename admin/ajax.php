@@ -2,6 +2,14 @@
 ob_start();
 $action = $_GET['action'];
 include 'admin_class.php';
+include 'db_connect.php';
+require '../vendor/phpmailer/phpmailer/src/SMTP.php';
+require '../vendor/phpmailer/phpmailer/src/Exception.php';
+require '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $crud = new Action();
 
 switch ($action) {
@@ -47,9 +55,9 @@ switch ($action) {
 		break;
 
 	case 'save_book_admin':
-		$save = $crud->save_book_admin();
-		echo $save;
-		break;
+		$save = saveBookAdmin($conn);
+        echo $save;
+        break;
 
 	case 'delete_book':
 		$save = $crud->delete_book();
@@ -74,5 +82,60 @@ switch ($action) {
 	default:
 		echo "Invalid action.";
 }
+
+function sendEmailNotification($toEmail, $status) {
+    $subject = "Booking Status Notification";
+    $body = "";
+
+    if ($status == 1) {
+        $body = "Your booking has been confirmed.";
+    } elseif ($status == 2) {
+        $body = "Your booking has been cancelled.";
+    } else {
+        $body = "Your booking is under verification.";
+    }
+
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'aadegbesan222@gmail.com';
+    $mail->Password = 'hgao miqw kwja wihe';
+    $mail->SMTPSecure = 'tls';
+    $mail->Port = 587;
+
+    $mail->setFrom('aadegbesan222@gmail.com', 'Effortless Events');
+    $mail->addAddress($toEmail);
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+
+    if (!$mail->send()) {
+        return 'Mailer Error: ' . $mail->ErrorInfo;
+    }
+    return 'Message sent!';
+}
+
+function saveBookAdmin($conn) {
+    extract($_POST);
+    $data = " name = '$name', address = '$address', email = '$email', contact = '$contact', duration = '$duration', datetime = '$schedule', status = '$status' ";
+
+    if (empty($id)) {
+        $chk = $conn->query("SELECT * FROM venue_booking WHERE email = '$email' AND datetime = '$schedule'")->num_rows;
+        if ($chk > 0) {
+            return 2; // Booking already exists
+        }
+        $save = $conn->query("INSERT INTO venue_booking SET " . $data);
+    } else {
+        $save = $conn->query("UPDATE venue_booking SET " . $data . " WHERE id = " . $id);
+    }
+
+    if ($save) {
+        $emailStatus = sendEmailNotification($email, $status);
+        return $emailStatus; // Return the email notification status
+    }
+
+    return 0; // Return 0 for failure
+}
+
 
 ob_end_flush();
