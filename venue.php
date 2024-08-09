@@ -64,9 +64,7 @@ include 'admin/db_connect.php';
         <div class="col-sm-3">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" id="search-input" placeholder="Search for venues..." aria-label="Search for venues">
-                <div class="input-group-append">
-                    <button class="btn btn-themec book-venue align-self-end" type="button" id="search-button">Search</button>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -167,10 +165,6 @@ $(document).ready(function() {
         } else {
             $('#no-results-message').hide();
         }
-    });
-
-    $('#search-button').on('click', function() {
-        $('#search-input').trigger('keyup');
     });
 
     $('.book-venue').click(function() {

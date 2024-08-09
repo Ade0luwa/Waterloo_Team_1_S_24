@@ -194,7 +194,7 @@ INSERT INTO `venue` (`id`, `venue`, `address`, `description`, `rate`) VALUES
 --
 
 CREATE TABLE `venue_booking` (
-  `id` int(30) NOT NULL,
+  `id` int(30) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` text NOT NULL,
   `address` text NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -202,27 +202,23 @@ CREATE TABLE `venue_booking` (
   `venue_id` int(30) NOT NULL,
   `duration` varchar(100) NOT NULL,
   `datetime` datetime NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-for verification,1=confirmed,2=canceled'
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0-for verification,1=confirmed,2=canceled',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 --
 -- Dumping data for table `venue_booking`
 --
 
-INSERT INTO `venue_booking` (`id`, `name`, `address`, `email`, `contact`, `venue_id`, `duration`, `datetime`, `status`) VALUES
-(6, 'vansh', 'address', 'vansh@gmail.in', '1234567890', 3, '24 hours', '2022-03-24 20:00:00', 1),
-(13, 'vansh', 'D-601 pratham residency\r\nAhmedabad', 'vansh.palkhiwala09@gmail.com', '7383400827', 2, '2 hours', '2022-04-21 21:00:00', 2),
-(15, 'vansh', 'B-604 Pratham', 'vansh@gmail.com', '7383400827', 3, 'abc', '2022-04-23 18:00:00', 0),
-(16, 'maryam', '1232', 'maryam@gmail.com', '1234567890', 4, '4', '2024-06-05 09:00:00', 1),
-(17, 'Adeoluwatomiwa', 'conestoga ', 'adetest@yopmail.com', '1111111111', 4, '2', '2024-07-23 15:00:00', 2),
-(18, 'Adeoluwatomiwa Daniel Adegbesan', 'conestoga', 'adegbesanadeoluwatomiwa@gmail.com', '3334445567', 2, '3', '2024-07-26 19:00:00', 2),
-(19, 'ade', 'conestoga', 'ade@gmiail.com', '2223334455', 4, '2', '2024-07-30 20:00:00', 1),
-(20, 'ama', 'msmm', 'mrretest@yopmail.com', '2020202020220', 2, '3', '2024-07-27 22:56:00', 0),
-(21, 'abaa', 'mama', 'mrretest@yopmail.com', '2020202020220', 2, '2', '2024-07-30 22:56:00', 2),
-(22, 'Deji', 'Conestoga', 'deji@gmail.com', '2269660039', 2, '3', '2024-07-31 21:00:00', 1),
-(23, '', 'conestoga', '', '123456789', 2, '2', '2024-08-16 10:36:00', 0),
-(24, 'Edikan Ekanem', 'Conestoga College', 'eekanem5146@conestogac.on.ca', '123456', 3, '5', '2024-08-21 11:01:00', 0),
-(25, 'Edikan Ekanem', 'school ', 'eekanem5146@conestogac.on.ca', '0099484484', 2, '5', '2024-08-30 11:22:00', 1);
+INSERT INTO `venue_booking` (`id`, `name`, `address`, `email`, `contact`, `venue_id`, `duration`, `datetime`, `status`, `created_at`) VALUES
+(6, 'vansh', 'address', 'vansh@gmail.in', '1234567890', 3, '24 hours', '2022-03-24 20:00:00', 1, '2024-07-24 20:00:00'),
+(13, 'vansh', 'D-601 pratham residency\r\nAhmedabad', 'vansh.palkhiwala09@gmail.com', '7383400827', 2, '2 hours', '2024-08-01 21:00:00', 2, '2022-04-21 21:00:00'),
+(15, 'vansh', 'B-604 Pratham', 'vansh@gmail.com', '7383400827', 3, 'abc', '2022-04-23 18:00:00', 0, '2024-07-23 18:00:00'),
+(16, 'maryam', '1232', 'maryam@gmail.com', '1234567890', 4, '4', '2024-06-05 09:00:00', 1, '2024-08-05 09:00:00'),
+(17, 'Adeoluwatomiwa', 'conestoga ', 'adetest@yopmail.com', '1111111111', 4, '2', '2024-07-28 15:00:00', 2, '2024-07-23 15:00:00'),
+(18, 'Adeoluwatomiwa Daniel Adegbesan', 'conestoga', 'adegbesanadeoluwatomiwa@gmail.com', '3334445567', 2, '3', '2024-07-31 19:00:00', 0, '2024-07-26 19:00:00'),
+(19, 'ade', 'conestoga', 'ade@gmiail.com', '2223334455', 4, '2', '2024-07-30 20:00:00', 1, '2024-07-30 20:00:00');
 
 --
 -- Indexes for dumped tables
