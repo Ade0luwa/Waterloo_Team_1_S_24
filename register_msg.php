@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <p>We will contact you soon for the verification of your booking request. Thank you</p>
+    <p>We will contact you soon for the verification of your registration request. Thank you</p>
 </div>
 <div class="modal-footer display">
     <div class="row">
