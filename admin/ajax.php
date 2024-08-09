@@ -4,81 +4,75 @@ $action = $_GET['action'];
 include 'admin_class.php';
 $crud = new Action();
 
-if($action == 'login'){
-	$login = $crud->login();
-	if($login)
-		echo $login;
-}
-if($action == 'login2'){
-	$login = $crud->login2();
-	if($login)
-		echo $login;
-}
-if($action == 'logout'){
-	$logout = $crud->logout();
-	if($logout)
-		echo $logout;
-}
-if($action == 'logout2'){
-	$logout = $crud->logout2();
-	if($logout)
-		echo $logout;
-}
-if($action == 'save_user'){
-	$save = $crud->save_user();
-	if($save)
+switch ($action) {
+	case 'login':
+		echo $crud->login();
+		break;
+	case 'adminLogin':
+		echo $crud->adminlogin();
+		break;
+	case 'logout':
+		echo $crud->logout();
+		break;
+	case 'save_client':
+		echo $crud->save_client();
+		break;
+	case 'delete_client':
+		echo $crud->delete_client();
+		break;
+	case 'save_user':
+		echo $crud->save_user();
+		break;
+	case 'delete_user':
+		echo $crud->delete_user();
+		break;
+	case 'signup':
+		$save = $crud->signup();
 		echo $save;
-}
-if($action == 'delete_user'){
-	$save = $crud->delete_user();
-	if($save)
+		break;
+
+	case 'save_settings':
+		$save = $crud->save_settings();
 		echo $save;
-}
-if($action == 'signup'){
-	$save = $crud->signup();
-	if($save)
+		break;
+
+	case 'save_venue':
+		$save = $crud->save_venue();
 		echo $save;
-}
-if($action == "save_settings"){
-	$save = $crud->save_settings();
-	if($save)
+		break;
+
+	case 'save_book':
+		$save = $crud->save_book();
 		echo $save;
-}
-if($action == "save_venue"){
-	$save = $crud->save_venue();
-	if($save)
+		break;
+
+	case 'save_book_admin':
+		$save = $crud->save_book_admin();
 		echo $save;
-}
-if($action == "save_book"){
-	$save = $crud->save_book();
-	if($save)
+		break;
+
+	case 'delete_book':
+		$save = $crud->delete_book();
 		echo $save;
-}
-if($action == "save_book_admin"){
-	$save = $crud->save_book_admin();
-	if($save)
+		break;
+
+	case 'delete_venue':
+		$save = $crud->delete_venue();
 		echo $save;
-}
-if($action == "delete_book"){
-	$save = $crud->delete_book();
-	if($save)
+		break;
+
+	case 'save_event':
+		$save = $crud->save_event();
 		echo $save;
+		break;
+
+	case 'delete_event':
+		$save = $crud->delete_event();
+		echo $save;
+		break;
+
+	default:
+		echo "Invalid action.";
 }
 
-if($action == "delete_venue"){
-	$save = $crud->delete_venue();
-	if($save)
-		echo $save;
-}
-
-if($action == "save_event"){
-	$save = $crud->save_event();
-	if($save)
-		echo $save;
-
-}
-if($action == "delete_event"){
-	$save = $crud->delete_event();
-	if($save)
-		echo $save;
-}
+ob_end_flush();

@@ -121,7 +121,7 @@ border-radius: 50px;
 		if($(this).find('.alert-danger').length > 0 )
 			$(this).find('.alert-danger').remove();
 		$.ajax({
-			url:'ajax.php?action=login',
+			url:'ajax.php?action=adminLogin',
 			method:'POST',
 			data:$(this).serialize(),
 			error:err=>{
