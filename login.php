@@ -1,9 +1,11 @@
 <?php
+
+session_start();
+
 $login = false;
 $showError = false;
 $logoutSuccess = false;
 
-session_start();
 if (isset($_SESSION['logout_success'])) {
     $logoutSuccess = true;
     unset($_SESSION['logout_success']);
@@ -14,8 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     $username = $_POST['username'];
     $pass = $_POST['password'];
+    $email = $_POST['email'];
 
-    $query = "SELECT * from `clients` where username = '$username'";
+    $query = "SELECT * from `clients` where email = '$email'";
     $result = mysqli_query($conn, $query);
 
     $numRows = mysqli_num_rows($result);
@@ -25,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (password_verify($pass, $row['password'])) {
             $_SESSION['loggedin'] = true;
             $_SESSION['name'] = $row['name'];
+            $_SESSION['email'] = $row['email'];
+
             $login = true;
             header('Location: index.php');
             exit();
@@ -162,8 +167,8 @@ main#main {
                         ?>
                         <form id="login-form" method="post">
                             <div class="form-group">
-                                <label for="username" class="control-label">Username</label>
-                                <input type="text" id="username" name="username" class="form-control">
+                                <label for="email" class="control-label">Email Address</label>
+                                <input type="text" id="email" name="email" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="password" class="control-label">Password</label>
