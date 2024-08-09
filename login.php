@@ -14,7 +14,6 @@ if (isset($_SESSION['logout_success'])) {
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     include './admin/db_connect.php';
 
-    $username = $_POST['username'];
     $pass = $_POST['password'];
     $email = $_POST['email'];
 
@@ -69,7 +68,6 @@ ob_end_flush();
 body {
     width: 100%;
     height: calc(100%);
-    /*background: #007bff;*/
 }
 
 main#main {
@@ -99,7 +97,6 @@ main#main {
     height: calc(100%);
     display: flex;
     align-items: center;
-    /*background: url(assets/uploads/<?php echo $_SESSION['system']['cover_img'] ?>);*/
     background: url('./admin/assets/img/bgimage.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -174,7 +171,7 @@ main#main {
                                 <label for="password" class="control-label">Password</label>
                                 <input type="password" id="password" name="password" class="form-control" autocomplete="off">
                             </div>
-                            <center><button class="btn-lg btn-wave btn-theme">Login</button></center>
+                            <center><button type="submit" class="btn-lg btn-block btn-wave col-md-4 btn-theme">Login</button></center>
                         </form><br>
                         <p> Don't Have an Account? <a href="signup.php">Sign Up</a></p>
                     </div>
@@ -183,23 +180,46 @@ main#main {
         </div>
     </main>
 
-    <!-- JavaScript to hide the messages after 2 seconds -->
+    <!-- JavaScript to handle form submission and hide messages after 2 seconds -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var errorMessage = document.getElementById('error-message');
-            var successMessage = document.getElementById('success-message');
-            var logoutSuccess = document.getElementById('logout-success');
+        $(document).ready(function() {
+            $('#login-form').submit(function(e) {
+                e.preventDefault();
+                $('#login-form button[type="submit"]').attr('disabled', true).html('Logging in...');
+                
+                if ($(this).find('.alert-danger').length > 0) {
+                    $(this).find('.alert-danger').remove();
+                }
 
+                $.ajax({
+                    url: 'admin/ajax.php?action=login',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(resp) {
+                        if (resp == 1) {
+                            location.href = 'index.php?page=home';
+                        } else {
+                            $('#login-form').prepend('<div id="error-message" class="alert alert-danger">Username or password is incorrect.</div>');
+                            $('#login-form button[type="submit"]').removeAttr('disabled').html('Login');
+                            
+                            // Hide error message after 2 seconds
+                            setTimeout(function() {
+                                $('#error-message').fadeOut('slow');
+                            }, 2000);
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        $('#login-form button[type="submit"]').removeAttr('disabled').html('Login');
+                    }
+                });
+            });
+
+            // Hide messages after 2 seconds
             setTimeout(function() {
-                if (errorMessage) {
-                    errorMessage.style.display = 'none';
-                }
-                if (successMessage) {
-                    successMessage.style.display = 'none';
-                }
-                if (logoutSuccess) {
-                    logoutSuccess.style.display = 'none';
-                }
+                $('#error-message').fadeOut('slow');
+                $('#logout-success').fadeOut('slow');
             }, 2000);
         });
     </script>
